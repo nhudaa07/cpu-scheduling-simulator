@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CPU Scheduling Visualizer</title>
+
+    <link rel="stylesheet" href="style/style.css">
+</head>
+
+<body>
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header class="header">
+
+        <div class="container nav">
+
+            <a href="#" class="logo">
+                <span class="logo-icon">⚙</span>
+                CPU<span>Viz</span>
+            </a>
+
+            <nav class="nav-links">
+
+                <a href="#visualizer" class="active">
+                    Visualizer
+                </a>
+
+                <a href="#compare">
+                    Compare
+                </a>
+
+                <a href="#about">
+                    About
+                </a>
+
+            </nav>
+
+            <button class="mobile-menu">
+                ☰
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+
+    <main>
+
+
+        <!-- =========================
+             HERO
+        ========================== -->
+
+        <section class="hero">
+
+            <div class="container">
+
+                <div class="hero-content">
+
+                    <span class="badge">
+                        CPU SCHEDULING ALGORITHM
+                    </span>
+
+                    <h1>
+                        Visualize CPU Scheduling
+                        <span>Algorithms</span>
+                    </h1>
+
+                    <p>
+                        Simulate, visualize and analyze CPU scheduling
+                        algorithms using interactive Gantt charts and
+                        performance metrics.
+                    </p>
+
+                    <div class="hero-actions">
+
+                        <a
+                            href="#visualizer"
+                            class="btn btn-primary">
+                            Start Visualizing
+                        </a>
+
+                        <a
+                            href="#compare"
+                            class="btn btn-secondary">
+                            Compare Algorithms
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================
+             MODULE 01
+        ========================== -->
+
+        <section
+            class="section"
+            id="visualizer">
+
+            <div class="container">
+
+
+                <!-- SECTION HEADING -->
+
+                <div class="section-heading">
+
+                    <span class="section-label">
+                        MODULE 01
+                    </span>
+
+                    <h2>
+                        Algorithm Visualizer
+                    </h2>
+
+                    <p>
+                        Configure your processes and visualize
+                        how the selected scheduling algorithm works.
+                    </p>
+
+                </div>
+
+
+
+                <!-- =========================
+                     SIMULATION SETUP
+                ========================== -->
+
+                <div class="card control-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>
+                                Simulation Setup
+                            </h3>
+
+                            <p>
+                                Configure the scheduling parameters
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-grid">
+
+
+                        <!-- Algorithm -->
+
+                        <div class="form-group">
+
+                            <label for="algorithm">
+                                Scheduling Algorithm
+                            </label>
+
+                            <select id="algorithm">
+
+                                <option value="SJF">
+                                    Shortest Job First (SJF)
+                                </option>
+
+                                <option value="SRTF">
+                                    Shortest Remaining Time First (SRTF)
+                                </option>
+
+                                <option value="PRIORITY">
+                                    Priority Scheduling
+                                </option>
+
+                                <option value="RR">
+                                    Round Robin
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+
+                        <!-- Number of processes -->
+
+                        <div class="form-group">
+
+                            <label for="process-count">
+                                Number of Processes
+                            </label>
+
+                            <input
+                                type="number"
+                                id="process-count"
+                                value="5"
+                                min="1"
+                                max="10">
+
+                        </div>
+
+
+
+                        <!-- Time Quantum -->
+
+                        <div
+                            class="form-group"
+                            id="quantum-group">
+
+                            <label for="quantum">
+                                Time Quantum
+                            </label>
+
+                            <input
+                                type="number"
+                                id="quantum"
+                                placeholder="For Round Robin"
+                                min="1">
+
+                        </div>
+
+
+
+                        <!-- Generate -->
+
+                        <div class="form-action">
+
+                            <button
+                                class="btn btn-primary"
+                                id="generate-btn">
+
+                                Generate Processes
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =========================
+                     PROCESS INPUT
+                ========================== -->
+
+                <div class="card process-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>
+                                Process Input
+                            </h3>
+
+                            <p>
+                                Enter the required values for each process
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="table-wrapper">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Process
+                                    </th>
+
+                                    <th>
+                                        Arrival Time
+                                    </th>
+
+                                    <th>
+                                        Burst Time
+                                    </th>
+
+                                    <th id="priority-heading">
+                                        Priority
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody id="process-table-body">
+
+                                <!-- JavaScript generates rows -->
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+
+                    <div class="run-area">
+
+                        <button
+                            class="btn btn-run"
+                            id="run-btn">
+
+                            ▶ Run Algorithm
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =========================
+                     GANTT CHART
+                ========================== -->
+
+                <div class="card gantt-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>
+                                Gantt Chart
+                            </h3>
+
+                            <p>
+                                CPU execution timeline
+                            </p>
+
+                        </div>
+
+
+                        <span
+                            class="algorithm-tag"
+                            id="algorithm-tag">
+
+                            SJF
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="gantt-wrapper">
+
+                        <div
+                            class="gantt-chart"
+                            id="gantt-chart">
+
+                            <!-- JavaScript generates Gantt chart -->
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =========================
+                     RESULT TABLE
+                ========================== -->
+
+                <div class="card result-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>
+                                Process Results
+                            </h3>
+
+                            <p>
+                                Calculated scheduling metrics
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="table-wrapper">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Process
+                                    </th>
+
+                                    <th>
+                                        AT
+                                    </th>
+
+                                    <th>
+                                        BT
+                                    </th>
+
+                                    <th id="result-priority-heading">
+                                        Priority
+                                    </th>
+
+                                    <th>
+                                        CT
+                                    </th>
+
+                                    <th>
+                                        TAT
+                                    </th>
+
+                                    <th>
+                                        WT
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody id="result-table-body">
+
+                                <!-- JavaScript generates results -->
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =========================
+                     STATISTICS
+                ========================== -->
+
+                <div class="stats-grid">
+
+
+                    <div class="stat-card">
+
+                        <span>
+                            Average Waiting Time
+                        </span>
+
+                        <strong id="avg-wt">
+                            0
+                        </strong>
+
+                        <small>
+                            time units
+                        </small>
+
+                    </div>
+
+
+
+                    <div class="stat-card">
+
+                        <span>
+                            Average Turnaround Time
+                        </span>
+
+                        <strong id="avg-tat">
+                            0
+                        </strong>
+
+                        <small>
+                            time units
+                        </small>
+
+                    </div>
+
+
+
+                    <div class="stat-card">
+
+                        <span>
+                            Total CPU Idle Time
+                        </span>
+
+                        <strong id="idle-time">
+                            0
+                        </strong>
+
+                        <small>
+                            time units
+                        </small>
+
+                    </div>
+
+
+
+                    <div class="stat-card">
+
+                        <span>
+                            CPU Utilization
+                        </span>
+
+                        <strong id="cpu-utilization">
+                            0%
+                        </strong>
+
+                        <small>
+                            overall utilization
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================
+             MODULE 02
+        ========================== -->
+
+        <section
+            class="section comparison-section"
+            id="compare">
+
+            <div class="container">
+
+
+                <div class="section-heading">
+
+                    <span class="section-label">
+                        MODULE 02
+                    </span>
+
+                    <h2>
+                        Compare Algorithms
+                    </h2>
+
+                    <p>
+                        Compare multiple scheduling algorithms
+                        using the same process workload.
+                    </p>
+
+                </div>
+
+
+
+                <!-- Comparison Selection -->
+
+                <div class="card comparison-card">
+
+                    <div class="algorithm-selection">
+
+                        <label>
+                            Select Algorithms
+                        </label>
+
+
+                        <div class="checkbox-grid">
+
+
+                            <label class="checkbox">
+
+                                <input
+                                    type="checkbox"
+                                    value="SJF"
+                                    checked>
+
+                                <span>
+                                    SJF
+                                </span>
+
+                            </label>
+
+
+
+                            <label class="checkbox">
+
+                                <input
+                                    type="checkbox"
+                                    value="SRTF"
+                                    checked>
+
+                                <span>
+                                    SRTF
+                                </span>
+
+                            </label>
+
+
+
+                            <label class="checkbox">
+
+                                <input
+                                    type="checkbox"
+                                    value="PRIORITY">
+
+                                <span>
+                                    Priority
+                                </span>
+
+                            </label>
+
+
+
+                            <label class="checkbox">
+
+                                <input
+                                    type="checkbox"
+                                    value="RR">
+
+                                <span>
+                                    Round Robin
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        class="btn btn-primary"
+                        id="compare-btn">
+
+                        Compare Selected Algorithms
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- Comparison Result -->
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>
+                                Performance Comparison
+                            </h3>
+
+                            <p>
+                                Metrics generated from the selected algorithms
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="table-wrapper">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Algorithm
+                                    </th>
+
+                                    <th>
+                                        Avg. Waiting Time
+                                    </th>
+
+                                    <th>
+                                        Avg. Turnaround Time
+                                    </th>
+
+                                    <th>
+                                        CPU Idle Time
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody
+                                id="comparison-table-body">
+
+                                <tr>
+
+                                    <td class="algorithm-name">
+                                        —
+                                    </td>
+
+                                    <td>
+                                        —
+                                    </td>
+
+                                    <td>
+                                        —
+                                    </td>
+
+                                    <td>
+                                        —
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================
+             ABOUT
+        ========================== -->
+
+        <section
+            class="section"
+            id="about">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <span class="section-label">
+                        ABOUT PROJECT
+                    </span>
+
+                    <h2>
+                        CPU Scheduling Visualizer
+                    </h2>
+
+                    <p>
+                        An interactive academic project for visualizing
+                        and analyzing CPU scheduling algorithms.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer class="footer">
+
+        <div class="container footer-content">
+
+            <div>
+
+                <strong>
+                    CPU<span>Viz</span>
+                </strong>
+
+                <p>
+                    CPU Scheduling Algorithm Visualizer
+                </p>
+
+            </div>
+
+
+            <p>
+                Academic Project • CPU Scheduling
+            </p>
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script src="js/app.js"></script>
+    <script src="js/compare.js"></script>
+
+</body>
+
+</html>

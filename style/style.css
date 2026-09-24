@@ -1,0 +1,1438 @@
+/* =========================================================
+   CPU SCHEDULING VISUALIZER
+   Complete Responsive Stylesheet
+========================================================= */
+
+
+/* =========================================================
+   1. ROOT VARIABLES
+========================================================= */
+
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-light: #eff6ff;
+
+    --text: #172033;
+    --text-light: #334155;
+    --muted: #64748b;
+
+    --white: #ffffff;
+    --background: #f8fafc;
+
+    --border: #e2e8f0;
+    --border-dark: #cbd5e1;
+
+    --success: #16a34a;
+    --danger: #dc2626;
+
+    --dark: #0f172a;
+    --dark-light: #172033;
+
+    --radius: 14px;
+
+    --shadow:
+        0 8px 30px rgba(15, 23, 42, 0.06);
+
+    --shadow-blue:
+        0 8px 25px rgba(37, 99, 235, 0.18);
+}
+
+
+/* =========================================================
+   2. RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+
+    font-family:
+        Inter,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    background: var(--background);
+    color: var(--text);
+
+    line-height: 1.6;
+
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+select {
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   3. CONTAINER
+========================================================= */
+
+.container {
+    width: min(
+        1180px,
+        calc(100% - 40px)
+    );
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/* =========================================================
+   4. COMMON SECTION
+========================================================= */
+
+.section {
+    padding: 80px 0;
+}
+
+
+/* =========================================================
+   5. HEADER
+========================================================= */
+
+.header {
+    width: 100%;
+    height: 72px;
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    background: rgba(255, 255, 255, 0.96);
+
+    border-bottom:
+        1px solid var(--border);
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.nav {
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+/* =========================================================
+   6. LOGO
+========================================================= */
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 9px;
+
+    color: var(--text);
+
+    font-size: 21px;
+    font-weight: 800;
+
+    letter-spacing: -0.5px;
+}
+
+.logo > span:last-child {
+    color: var(--primary);
+}
+
+.logo-icon {
+    width: 35px;
+    height: 35px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: var(--primary);
+    color: #ffffff;
+
+    font-size: 17px;
+
+    box-shadow:
+        0 4px 12px rgba(37, 99, 235, 0.22);
+}
+
+
+/* =========================================================
+   7. NAVIGATION
+========================================================= */
+
+.nav-links {
+    display: flex;
+    align-items: center;
+
+    gap: 32px;
+}
+
+.nav-links a {
+    position: relative;
+
+    color: var(--muted);
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition:
+        color 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: var(--primary);
+}
+
+.nav-links a.active {
+    color: var(--primary);
+}
+
+.nav-links a.active::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: -7px;
+
+    height: 2px;
+
+    border-radius: 5px;
+
+    background: var(--primary);
+}
+
+
+/* Mobile menu */
+
+.mobile-menu {
+    display: none;
+
+    width: 40px;
+    height: 40px;
+
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 8px;
+
+    background: transparent;
+    color: var(--text);
+
+    font-size: 23px;
+}
+
+
+/* =========================================================
+   8. HERO
+========================================================= */
+
+.hero {
+    position: relative;
+
+    padding: 105px 0 95px;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 80% 15%,
+            rgba(219, 234, 254, 0.9) 0,
+            rgba(219, 234, 254, 0) 35%
+        ),
+        linear-gradient(
+            180deg,
+            #ffffff 0%,
+            #f8fafc 100%
+        );
+
+    border-bottom:
+        1px solid var(--border);
+}
+
+.hero-content {
+    width: 100%;
+    max-width: 780px;
+
+    margin: 0 auto;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   9. BADGES
+========================================================= */
+
+.badge,
+.section-label {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 6px 12px;
+
+    border-radius: 999px;
+
+    background: var(--primary-light);
+    color: var(--primary);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   10. HERO TYPOGRAPHY
+========================================================= */
+
+.hero h1 {
+    margin-top: 20px;
+
+    color: var(--text);
+
+    font-size:
+        clamp(
+            40px,
+            6vw,
+            64px
+        );
+
+    font-weight: 800;
+
+    line-height: 1.08;
+
+    letter-spacing: -2.8px;
+}
+
+.hero h1 span {
+    color: var(--primary);
+}
+
+.hero p {
+    max-width: 680px;
+
+    margin: 22px auto 0;
+
+    color: var(--muted);
+
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   11. HERO BUTTONS
+========================================================= */
+
+.hero-actions {
+    margin-top: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+}
+
+
+/* =========================================================
+   12. GLOBAL BUTTON
+========================================================= */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 44px;
+
+    padding: 12px 20px;
+
+    border-radius: 9px;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    line-height: 1.2;
+
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   13. PRIMARY BUTTON
+   IMPORTANT:
+   High specificity prevents white-button problem.
+========================================================= */
+
+a.btn.btn-primary,
+button.btn.btn-primary {
+    background-color: var(--primary) !important;
+
+    color: #ffffff !important;
+
+    border: 1px solid var(--primary) !important;
+
+    box-shadow:
+        0 6px 18px
+        rgba(37, 99, 235, 0.20);
+}
+
+a.btn.btn-primary:hover,
+button.btn.btn-primary:hover {
+    background-color: var(--primary-dark) !important;
+
+    color: #ffffff !important;
+
+    border-color: var(--primary-dark) !important;
+
+    box-shadow:
+        0 8px 22px
+        rgba(37, 99, 235, 0.28);
+}
+
+
+/* =========================================================
+   14. SECONDARY BUTTON
+========================================================= */
+
+a.btn.btn-secondary,
+button.btn.btn-secondary {
+    background-color: #ffffff !important;
+
+    color: var(--text) !important;
+
+    border:
+        1px solid var(--border) !important;
+
+    box-shadow: none;
+}
+
+a.btn.btn-secondary:hover,
+button.btn.btn-secondary:hover {
+    background-color: #f8fafc !important;
+
+    color: var(--text) !important;
+
+    border-color: var(--border-dark) !important;
+}
+
+
+/* =========================================================
+   15. RUN BUTTON
+========================================================= */
+
+button.btn.btn-run {
+    background-color: var(--dark-light) !important;
+
+    color: #ffffff !important;
+
+    border:
+        1px solid var(--dark-light) !important;
+
+    box-shadow:
+        0 5px 14px
+        rgba(15, 23, 42, 0.15);
+}
+
+button.btn.btn-run:hover {
+    background-color: var(--dark) !important;
+
+    color: #ffffff !important;
+
+    border-color: var(--dark) !important;
+}
+
+
+/* =========================================================
+   16. SECTION HEADING
+========================================================= */
+
+.section-heading {
+    margin-bottom: 28px;
+}
+
+.section-heading h2 {
+    margin-top: 9px;
+
+    color: var(--text);
+
+    font-size: 32px;
+    font-weight: 800;
+
+    line-height: 1.2;
+
+    letter-spacing: -1px;
+}
+
+.section-heading p {
+    max-width: 700px;
+
+    margin-top: 7px;
+
+    color: var(--muted);
+
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   17. CARD
+========================================================= */
+
+.card {
+    width: 100%;
+
+    overflow: hidden;
+
+    background: var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    box-shadow: var(--shadow);
+}
+
+
+/* =========================================================
+   18. CARD HEADER
+========================================================= */
+
+.card-header {
+    min-height: 76px;
+
+    padding: 20px 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    border-bottom:
+        1px solid var(--border);
+}
+
+.card-header h3 {
+    color: var(--text);
+
+    font-size: 18px;
+    font-weight: 750;
+
+    line-height: 1.3;
+}
+
+.card-header p {
+    margin-top: 3px;
+
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   19. CONTROL CARD
+========================================================= */
+
+.control-card {
+    margin-bottom: 24px;
+}
+
+.form-grid {
+    padding: 24px;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(220px, 1.5fr)
+        minmax(150px, 0.8fr)
+        minmax(160px, 1fr)
+        auto;
+
+    align-items: end;
+
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.form-group label,
+.algorithm-selection > label {
+    color: var(--text);
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   20. INPUTS / SELECT
+========================================================= */
+
+.form-group input,
+.form-group select,
+table input {
+    width: 100%;
+
+    min-height: 42px;
+
+    padding: 9px 12px;
+
+    background: #ffffff;
+
+    color: var(--text);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 8px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.form-group input::placeholder {
+    color: #94a3b8;
+}
+
+.form-group input:hover,
+.form-group select:hover,
+table input:hover {
+    border-color: #cbd5e1;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+table input:focus {
+    border-color: var(--primary);
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(37, 99, 235, 0.08);
+}
+
+
+/* =========================================================
+   21. PROCESS CARD
+========================================================= */
+
+.process-card {
+    margin-bottom: 24px;
+}
+
+
+/* =========================================================
+   22. TABLE
+========================================================= */
+
+.table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+
+    -webkit-overflow-scrolling: touch;
+}
+
+table {
+    width: 100%;
+
+    min-width: 650px;
+
+    border-collapse: collapse;
+}
+
+thead th {
+    padding: 14px 18px;
+
+    background: #f8fafc;
+
+    color: #64748b;
+
+    text-align: left;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+
+    text-transform: uppercase;
+
+    white-space: nowrap;
+}
+
+tbody td {
+    padding: 13px 18px;
+
+    color: var(--text);
+
+    font-size: 14px;
+
+    border-bottom:
+        1px solid var(--border);
+
+    white-space: nowrap;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr:hover {
+    background: #fafcff;
+}
+
+.process-name,
+.algorithm-name {
+    color: var(--primary) !important;
+
+    font-weight: 800;
+}
+
+table input {
+    width: 90px;
+
+    min-height: 38px;
+
+    padding: 7px 10px;
+}
+
+
+/* =========================================================
+   23. RUN AREA
+========================================================= */
+
+.run-area {
+    padding: 20px 24px;
+
+    display: flex;
+    justify-content: flex-end;
+
+    border-top:
+        1px solid var(--border);
+}
+
+
+/* =========================================================
+   24. GANTT CARD
+========================================================= */
+
+.gantt-card {
+    margin-bottom: 24px;
+}
+
+.algorithm-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 6px 11px;
+
+    background: var(--primary-light);
+
+    color: var(--primary);
+
+    border-radius: 6px;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   25. GANTT CHART
+========================================================= */
+
+.gantt-wrapper {
+    width: 100%;
+
+    padding: 35px 24px;
+
+    overflow-x: auto;
+
+    -webkit-overflow-scrolling: touch;
+}
+
+.gantt-chart {
+    width: 100%;
+
+    min-width: 650px;
+    min-height: 75px;
+
+    display: flex;
+    align-items: stretch;
+
+    overflow: hidden;
+
+    background: #f8fafc;
+
+    border:
+        1px solid var(--border-dark);
+}
+
+.gantt-block {
+    min-width: 65px;
+
+    height: 75px;
+
+    flex: 1 1 0;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 5px;
+
+    color: #ffffff;
+
+    border-right:
+        2px solid #ffffff;
+
+    overflow: hidden;
+
+    transition:
+        opacity 0.2s ease;
+}
+
+.gantt-block:last-child {
+    border-right: none;
+}
+
+.gantt-block:hover {
+    opacity: 0.88;
+}
+
+.gantt-block strong {
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.gantt-block span {
+    margin-top: 3px;
+
+    color: rgba(255, 255, 255, 0.9);
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   26. DYNAMIC GANTT COLORS
+========================================================= */
+
+.gantt-block:nth-child(8n + 1) {
+    background: #2563eb;
+}
+
+.gantt-block:nth-child(8n + 2) {
+    background: #7c3aed;
+}
+
+.gantt-block:nth-child(8n + 3) {
+    background: #0891b2;
+}
+
+.gantt-block:nth-child(8n + 4) {
+    background: #ea580c;
+}
+
+.gantt-block:nth-child(8n + 5) {
+    background: #16a34a;
+}
+
+.gantt-block:nth-child(8n + 6) {
+    background: #db2777;
+}
+
+.gantt-block:nth-child(8n + 7) {
+    background: #9333ea;
+}
+
+.gantt-block:nth-child(8n + 8) {
+    background: #0284c7;
+}
+
+
+/* =========================================================
+   27. RESULT CARD
+========================================================= */
+
+.result-card {
+    margin-bottom: 24px;
+}
+
+
+/* =========================================================
+   28. STATISTICS
+========================================================= */
+
+.stats-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 16px;
+}
+
+.stat-card {
+    min-width: 0;
+
+    padding: 22px;
+
+    background: #ffffff;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    box-shadow: var(--shadow);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 32px
+        rgba(15, 23, 42, 0.08);
+}
+
+.stat-card span {
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 13px;
+    font-weight: 600;
+
+    line-height: 1.4;
+}
+
+.stat-card strong {
+    display: block;
+
+    margin-top: 8px;
+
+    color: var(--text);
+
+    font-size: 30px;
+    font-weight: 800;
+
+    line-height: 1;
+
+    letter-spacing: -1px;
+}
+
+.stat-card small {
+    display: block;
+
+    margin-top: 8px;
+
+    color: #94a3b8;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   29. COMPARISON SECTION
+========================================================= */
+
+.comparison-section {
+    background: #ffffff;
+
+    border-top:
+        1px solid var(--border);
+
+    border-bottom:
+        1px solid var(--border);
+}
+
+
+/* =========================================================
+   30. COMPARISON CARD
+========================================================= */
+
+.comparison-card {
+    margin-bottom: 24px;
+
+    padding: 24px;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 30px;
+}
+
+.algorithm-selection {
+    flex: 1;
+
+    min-width: 0;
+}
+
+.checkbox-grid {
+    margin-top: 12px;
+
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 10px;
+}
+
+
+/* =========================================================
+   31. CHECKBOX
+========================================================= */
+
+.checkbox {
+    min-height: 42px;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 9px 14px;
+
+    background: #f8fafc;
+
+    color: var(--text);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 8px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.checkbox:hover {
+    background: var(--primary-light);
+
+    border-color: #bfdbfe;
+
+    color: var(--primary);
+}
+
+.checkbox input {
+    width: 16px;
+    height: 16px;
+
+    margin: 0;
+
+    accent-color: var(--primary);
+
+    cursor: pointer;
+}
+
+.checkbox span {
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   32. COMPARISON BUTTON
+========================================================= */
+
+#compare-btn {
+    flex-shrink: 0;
+
+    min-width: 220px;
+}
+
+
+/* =========================================================
+   33. FOOTER
+========================================================= */
+
+.footer {
+    padding: 30px 0;
+
+    background: var(--dark);
+
+    color: #ffffff;
+}
+
+.footer-content {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.footer strong {
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.footer strong span {
+    color: #60a5fa;
+}
+
+.footer p {
+    color: #94a3b8;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   34. TABLET
+========================================================= */
+
+@media (max-width: 1050px) {
+
+    .form-grid {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .form-action {
+        grid-column: span 2;
+    }
+
+    .form-action .btn {
+        width: 100%;
+    }
+
+    .stats-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+/* =========================================================
+   35. TABLET / SMALL LAPTOP
+========================================================= */
+
+@media (max-width: 800px) {
+
+    .comparison-card {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    #compare-btn {
+        width: 100%;
+
+        min-width: 0;
+    }
+
+}
+
+
+/* =========================================================
+   36. MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+    /* Container */
+
+    .container {
+        width:
+            calc(100% - 28px);
+    }
+
+
+    /* Header */
+
+    .header {
+        height: 64px;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .mobile-menu {
+        display: inline-flex;
+    }
+
+
+    /* Hero */
+
+    .hero {
+        padding: 70px 0;
+    }
+
+    .hero h1 {
+        font-size: 39px;
+
+        letter-spacing: -1.7px;
+    }
+
+    .hero p {
+        font-size: 15px;
+
+        line-height: 1.65;
+    }
+
+    .hero-actions {
+        width: 100%;
+
+        flex-direction: column;
+
+        gap: 10px;
+    }
+
+    .hero-actions .btn {
+        width: 100%;
+    }
+
+
+    /* Section */
+
+    .section {
+        padding: 55px 0;
+    }
+
+    .section-heading {
+        margin-bottom: 22px;
+    }
+
+    .section-heading h2 {
+        font-size: 27px;
+    }
+
+    .section-heading p {
+        font-size: 14px;
+    }
+
+
+    /* Card Header */
+
+    .card-header {
+        min-height: auto;
+
+        padding: 18px;
+
+        align-items: flex-start;
+    }
+
+    .card-header h3 {
+        font-size: 16px;
+    }
+
+    .card-header p {
+        font-size: 12px;
+    }
+
+
+    /* Form */
+
+    .form-grid {
+        grid-template-columns: 1fr;
+
+        padding: 18px;
+    }
+
+    .form-action {
+        grid-column: auto;
+    }
+
+    .form-action .btn {
+        width: 100%;
+    }
+
+
+    /* Run */
+
+    .run-area {
+        padding: 18px;
+    }
+
+    .run-area .btn {
+        width: 100%;
+    }
+
+
+    /* Gantt */
+
+    .gantt-wrapper {
+        padding: 25px 18px;
+    }
+
+    .gantt-chart {
+        min-width: 600px;
+    }
+
+
+    /* Statistics */
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    /* Comparison */
+
+    .comparison-card {
+        padding: 18px;
+    }
+
+    .checkbox-grid {
+        gap: 8px;
+    }
+
+    .checkbox {
+        flex: 1 1 calc(50% - 8px);
+
+        justify-content: flex-start;
+    }
+
+
+    /* Footer */
+
+    .footer-content {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 10px;
+    }
+
+}
+
+
+/* =========================================================
+   37. VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
+
+    .hero {
+        padding: 60px 0;
+    }
+
+    .hero h1 {
+        font-size: 34px;
+
+        letter-spacing: -1.3px;
+    }
+
+    .hero p {
+        font-size: 14px;
+    }
+
+    .section-heading h2 {
+        font-size: 25px;
+    }
+
+    .checkbox {
+        flex: 1 1 100%;
+    }
+
+    .stat-card {
+        padding: 20px;
+    }
+
+    .stat-card strong {
+        font-size: 27px;
+    }
+
+    .algorithm-tag {
+        font-size: 11px;
+    }
+
+}
+
+
+/* =========================================================
+   38. ACCESSIBILITY / FOCUS
+========================================================= */
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 3px solid
+        rgba(37, 99, 235, 0.25);
+
+    outline-offset: 2px;
+}
