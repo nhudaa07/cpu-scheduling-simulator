@@ -1188,6 +1188,70 @@ table input {
 /* =========================================================
    35. TABLET / SMALL LAPTOP
 ========================================================= */
+@media (max-width: 768px) {
+
+    .mobile-menu {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 42px;
+        height: 42px;
+
+        background: transparent;
+        color: #111827;
+
+        font-size: 24px;
+        border-radius: 8px;
+    }
+
+    .mobile-menu:hover {
+        background: #f3f4f6;
+    }
+
+    .nav-links {
+        display: none;
+        position: absolute;
+
+        top: 100%;
+        left: 0;
+        right: 0;
+
+        background: #ffffff;
+
+        padding: 12px 20px 16px;
+
+        flex-direction: column;
+        gap: 5px;
+
+        border-top: 1px solid #e5e7eb;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+
+        z-index: 9999;
+    }
+
+    .nav-links.show {
+        display: flex;
+    }
+
+    .nav-links a {
+        display: block;
+        width: 100%;
+
+        padding: 12px 14px;
+
+        color: #1f2937;
+        text-decoration: none;
+
+        border-radius: 7px;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+        background: #f3f4f6;
+        color: #2563eb;
+    }
+}
 
 @media (max-width: 800px) {
 
