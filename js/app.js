@@ -1,15 +1,26 @@
 // ==========================================
 // CPU SCHEDULING VISUALIZER
-// Based on user's C++ algorithms
 // ==========================================
 
 
-const algorithmSelect = document.getElementById("algorithm");
-const processCountInput = document.getElementById("process-count");
-const quantumInput = document.getElementById("quantum");
+// ==========================================
+// DOM ELEMENTS
+// ==========================================
 
-const generateBtn = document.getElementById("generate-btn");
-const runBtn = document.getElementById("run-btn");
+const algorithmSelect =
+    document.getElementById("algorithm");
+
+const processCountInput =
+    document.getElementById("process-count");
+
+const quantumInput =
+    document.getElementById("quantum");
+
+const generateBtn =
+    document.getElementById("generate-btn");
+
+const runBtn =
+    document.getElementById("run-btn");
 
 const processTableBody =
     document.getElementById("process-table-body");
@@ -50,15 +61,23 @@ generateProcesses();
 // GENERATE PROCESS INPUT TABLE
 // ==========================================
 
-generateBtn.addEventListener("click", generateProcesses);
+generateBtn.addEventListener(
+    "click",
+    generateProcesses
+);
 
 
 function generateProcesses() {
 
-    const n = parseInt(processCountInput.value);
+    const n =
+        parseInt(processCountInput.value);
 
     if (!n || n < 1 || n > 10) {
-        alert("Number of processes must be between 1 and 10.");
+
+        alert(
+            "Number of processes must be between 1 and 10."
+        );
+
         return;
     }
 
@@ -66,7 +85,8 @@ function generateProcesses() {
 
     for (let i = 0; i < n; i++) {
 
-        const row = document.createElement("tr");
+        const row =
+            document.createElement("tr");
 
         row.innerHTML = `
             <td class="process-name">
@@ -126,15 +146,21 @@ function updateInputVisibility() {
     // Time quantum only for RR
 
     if (algorithm === "RR") {
+
         quantumGroup.style.display = "flex";
+
     } else {
+
         quantumGroup.style.display = "none";
     }
+
 
     // Priority column
 
     const priorityHeading =
-        document.getElementById("priority-heading");
+        document.getElementById(
+            "priority-heading"
+        );
 
     const resultPriorityHeading =
         document.getElementById(
@@ -158,7 +184,10 @@ function updateInputVisibility() {
 // RUN ALGORITHM
 // ==========================================
 
-runBtn.addEventListener("click", runAlgorithm);
+runBtn.addEventListener(
+    "click",
+    runAlgorithm
+);
 
 
 function runAlgorithm() {
@@ -167,7 +196,11 @@ function runAlgorithm() {
         getProcessesFromTable();
 
     if (processes.length === 0) {
-        alert("Please enter process information.");
+
+        alert(
+            "Please enter process information."
+        );
+
         return;
     }
 
@@ -176,33 +209,76 @@ function runAlgorithm() {
 
     let result;
 
-    if (algorithm === "SJF") {
 
-        result = sjf(processes);
+    // ======================================
+    // FCFS
+    // ======================================
 
-    } else if (algorithm === "SRTF") {
+    if (algorithm === "FCFS") {
 
-        result = srtf(processes);
+        result =
+            fcfs(processes);
 
-    } else if (algorithm === "PRIORITY") {
+    }
 
-        result = priorityScheduling(processes);
+    // ======================================
+    // SJF
+    // ======================================
 
-    } else if (algorithm === "RR") {
+    else if (algorithm === "SJF") {
+
+        result =
+            sjf(processes);
+
+    }
+
+    // ======================================
+    // SRTF
+    // ======================================
+
+    else if (algorithm === "SRTF") {
+
+        result =
+            srtf(processes);
+
+    }
+
+    // ======================================
+    // PRIORITY
+    // ======================================
+
+    else if (algorithm === "PRIORITY") {
+
+        result =
+            priorityScheduling(processes);
+
+    }
+
+    // ======================================
+    // ROUND ROBIN
+    // ======================================
+
+    else if (algorithm === "RR") {
 
         const quantum =
             parseInt(quantumInput.value);
 
         if (!quantum || quantum <= 0) {
-            alert("Please enter a valid time quantum.");
+
+            alert(
+                "Please enter a valid time quantum."
+            );
+
             return;
         }
 
-        result = roundRobin(
-            processes,
-            quantum
-        );
+        result =
+            roundRobin(
+                processes,
+                quantum
+            );
     }
+
 
     displayResults(result);
 }
@@ -215,38 +291,58 @@ function runAlgorithm() {
 function getProcessesFromTable() {
 
     const arrivalInputs =
-        document.querySelectorAll(".arrival-input");
+        document.querySelectorAll(
+            ".arrival-input"
+        );
 
     const burstInputs =
-        document.querySelectorAll(".burst-input");
+        document.querySelectorAll(
+            ".burst-input"
+        );
 
     const priorityInputs =
-        document.querySelectorAll(".priority-input");
+        document.querySelectorAll(
+            ".priority-input"
+        );
 
     const processes = [];
 
-    for (let i = 0; i < arrivalInputs.length; i++) {
+
+    for (
+        let i = 0;
+        i < arrivalInputs.length;
+        i++
+    ) {
 
         const arrival =
-            parseInt(arrivalInputs[i].value);
+            parseInt(
+                arrivalInputs[i].value
+            );
 
         const burst =
-            parseInt(burstInputs[i].value);
+            parseInt(
+                burstInputs[i].value
+            );
 
         const priority =
-            parseInt(priorityInputs[i].value);
+            parseInt(
+                priorityInputs[i].value
+            );
+
 
         if (
             isNaN(arrival) ||
             isNaN(burst) ||
             burst <= 0
         ) {
+
             alert(
                 `Invalid input for P${i + 1}`
             );
 
             return [];
         }
+
 
         processes.push({
 
@@ -265,7 +361,166 @@ function getProcessesFromTable() {
         });
     }
 
+
     return processes;
+}
+
+
+// ==========================================
+// FCFS
+// ==========================================
+
+function fcfs(processes) {
+
+    const p =
+        processes.map(process => ({
+            ...process,
+            completed: false
+        }));
+
+    let currentTime = 0;
+
+    let completedCount = 0;
+
+    let idleTime = 0;
+
+    const gantt = [];
+
+
+    // FCFS:
+    // First Come First Serve
+    // Process with smaller Arrival Time executes first
+
+    const sortedProcesses =
+        [...p].sort(
+            (a, b) =>
+                a.AT - b.AT ||
+                a.pid - b.pid
+        );
+
+
+    while (
+        completedCount <
+        sortedProcesses.length
+    ) {
+
+        const process =
+            sortedProcesses[
+                completedCount
+            ];
+
+
+        // ==================================
+        // CPU IDLE
+        // ==================================
+
+        if (
+            currentTime <
+            process.AT
+        ) {
+
+            gantt.push({
+
+                pid: "IDLE",
+
+                start: currentTime,
+
+                end: process.AT
+            });
+
+
+            idleTime +=
+                process.AT -
+                currentTime;
+
+
+            currentTime =
+                process.AT;
+        }
+
+
+        // ==================================
+        // EXECUTE PROCESS
+        // ==================================
+
+        const start =
+            currentTime;
+
+
+        currentTime +=
+            process.BT;
+
+
+        const end =
+            currentTime;
+
+
+        gantt.push({
+
+            pid:
+                process.pid,
+
+            start:
+                start,
+
+            end:
+                end
+        });
+
+
+        // ==================================
+        // COMPLETION TIME
+        // ==================================
+
+        process.CT =
+            currentTime;
+
+
+        // ==================================
+        // TURNAROUND TIME
+        // ==================================
+
+        process.TAT =
+            process.CT -
+            process.AT;
+
+
+        // ==================================
+        // WAITING TIME
+        // ==================================
+
+        process.WT =
+            process.TAT -
+            process.BT1;
+
+
+        process.completed =
+            true;
+
+
+        completedCount++;
+    }
+
+
+    // Keep result table in P1, P2, P3 order
+
+    sortedProcesses.sort(
+        (a, b) =>
+            a.pid - b.pid
+    );
+
+
+    return {
+
+        processes:
+            sortedProcesses,
+
+        gantt:
+            gantt,
+
+        idleTime:
+            idleTime
+    };
 }
 
 
@@ -290,16 +545,22 @@ function sjf(processes) {
     let idleTime = 0;
 
 
-    while (completedCount < p.length) {
+    while (
+        completedCount < p.length
+    ) {
 
         let workingProcess = -1;
 
         let minBurst = Infinity;
 
 
-        // Find shortest burst time
+        // Find shortest burst among arrived processes
 
-        for (let i = 0; i < p.length; i++) {
+        for (
+            let i = 0;
+            i < p.length;
+            i++
+        ) {
 
             if (
                 !p[i].completed &&
@@ -310,7 +571,8 @@ function sjf(processes) {
                     p[i].BT < minBurst
                 ) {
 
-                    minBurst = p[i].BT;
+                    minBurst =
+                        p[i].BT;
 
                     workingProcess = i;
                 }
@@ -318,25 +580,83 @@ function sjf(processes) {
         }
 
 
-        // No process has arrived
+        // ======================================
+        // CPU IDLE
+        // ======================================
 
-        if (workingProcess === -1) {
+        if (
+            workingProcess === -1
+        ) {
 
-            currentTime++;
+            let nextArrival =
+                Infinity;
 
-            idleTime++;
+
+            for (
+                let i = 0;
+                i < p.length;
+                i++
+            ) {
+
+                if (
+                    !p[i].completed &&
+                    p[i].AT > currentTime
+                ) {
+
+                    nextArrival =
+                        Math.min(
+                            nextArrival,
+                            p[i].AT
+                        );
+                }
+            }
+
+
+            if (
+                nextArrival !== Infinity
+            ) {
+
+                gantt.push({
+
+                    pid: "IDLE",
+
+                    start: currentTime,
+
+                    end: nextArrival
+                });
+
+
+                idleTime +=
+                    nextArrival -
+                    currentTime;
+
+
+                currentTime =
+                    nextArrival;
+
+            } else {
+
+                currentTime++;
+
+                idleTime++;
+            }
+
 
             continue;
         }
 
 
-        // Execute completely
+        // ======================================
+        // EXECUTE PROCESS
+        // ======================================
 
         const start =
             currentTime;
 
+
         currentTime +=
             p[workingProcess].BT;
+
 
         const end =
             currentTime;
@@ -347,9 +667,11 @@ function sjf(processes) {
             pid:
                 p[workingProcess].pid,
 
-            start: start,
+            start:
+                start,
 
-            end: end
+            end:
+                end
         });
 
 
@@ -381,9 +703,15 @@ function sjf(processes) {
 
 
     return {
-        processes: p,
-        gantt: gantt,
-        idleTime: idleTime
+
+        processes:
+            p,
+
+        gantt:
+            gantt,
+
+        idleTime:
+            idleTime
     };
 }
 
@@ -396,9 +724,11 @@ function srtf(processes) {
 
     const p =
         processes.map(process => ({
+
             ...process,
 
-            RT: process.BT
+            RT:
+                process.BT
         }));
 
 
@@ -415,7 +745,9 @@ function srtf(processes) {
     let segmentStart = 0;
 
 
-    while (completed < p.length) {
+    while (
+        completed < p.length
+    ) {
 
         let workingProcess = -1;
 
@@ -424,7 +756,11 @@ function srtf(processes) {
 
         // Find shortest remaining time
 
-        for (let i = 0; i < p.length; i++) {
+        for (
+            let i = 0;
+            i < p.length;
+            i++
+        ) {
 
             if (
                 p[i].AT <= currentTime &&
@@ -432,8 +768,7 @@ function srtf(processes) {
             ) {
 
                 if (
-                    p[i].RT <
-                    minRemaining
+                    p[i].RT < minRemaining
                 ) {
 
                     minRemaining =
@@ -445,27 +780,94 @@ function srtf(processes) {
         }
 
 
-        // CPU idle
+        // ======================================
+        // CPU IDLE
+        // ======================================
 
-        if (workingProcess === -1) {
+        if (
+            workingProcess === -1
+        ) {
 
-            if (previousProcess !== null) {
+            // Close previous process block
+
+            if (
+                previousProcess !== null
+            ) {
 
                 gantt.push({
 
-                    pid: previousProcess,
+                    pid:
+                        previousProcess,
 
-                    start: segmentStart,
+                    start:
+                        segmentStart,
 
-                    end: currentTime
+                    end:
+                        currentTime
                 });
+
 
                 previousProcess = null;
             }
 
-            currentTime++;
 
-            idleTime++;
+            // Find next arrival
+
+            let nextArrival =
+                Infinity;
+
+
+            for (
+                let i = 0;
+                i < p.length;
+                i++
+            ) {
+
+                if (
+                    p[i].RT > 0 &&
+                    p[i].AT > currentTime
+                ) {
+
+                    nextArrival =
+                        Math.min(
+                            nextArrival,
+                            p[i].AT
+                        );
+                }
+            }
+
+
+            if (
+                nextArrival !== Infinity
+            ) {
+
+                gantt.push({
+
+                    pid: "IDLE",
+
+                    start:
+                        currentTime,
+
+                    end:
+                        nextArrival
+                });
+
+
+                idleTime +=
+                    nextArrival -
+                    currentTime;
+
+
+                currentTime =
+                    nextArrival;
+
+            } else {
+
+                currentTime++;
+
+                idleTime++;
+            }
+
 
             continue;
         }
@@ -475,11 +877,12 @@ function srtf(processes) {
             p[workingProcess].pid;
 
 
-        // Start new Gantt block
+        // ======================================
+        // START NEW GANTT BLOCK
+        // ======================================
 
         if (
-            previousProcess !==
-            currentPid
+            previousProcess !== currentPid
         ) {
 
             if (
@@ -488,13 +891,17 @@ function srtf(processes) {
 
                 gantt.push({
 
-                    pid: previousProcess,
+                    pid:
+                        previousProcess,
 
-                    start: segmentStart,
+                    start:
+                        segmentStart,
 
-                    end: currentTime
+                    end:
+                        currentTime
                 });
             }
+
 
             previousProcess =
                 currentPid;
@@ -511,7 +918,9 @@ function srtf(processes) {
         currentTime++;
 
 
-        // Process completed
+        // ======================================
+        // PROCESS COMPLETED
+        // ======================================
 
         if (
             p[workingProcess].RT === 0
@@ -533,28 +942,38 @@ function srtf(processes) {
     }
 
 
-    // Last Gantt block
+    // ======================================
+    // LAST GANTT BLOCK
+    // ======================================
 
-    if (previousProcess !== null) {
+    if (
+        previousProcess !== null
+    ) {
 
         gantt.push({
 
-            pid: previousProcess,
+            pid:
+                previousProcess,
 
-            start: segmentStart,
+            start:
+                segmentStart,
 
-            end: currentTime
+            end:
+                currentTime
         });
     }
 
 
     return {
 
-        processes: p,
+        processes:
+            p,
 
-        gantt: gantt,
+        gantt:
+            gantt,
 
-        idleTime: idleTime
+        idleTime:
+            idleTime
     };
 }
 
@@ -567,6 +986,7 @@ function priorityScheduling(processes) {
 
     const p =
         processes.map(process => ({
+
             ...process,
 
             completed: false
@@ -583,15 +1003,14 @@ function priorityScheduling(processes) {
 
 
     while (
-        completedCount <
-        p.length
+        completedCount < p.length
     ) {
 
         let workingProcess = -1;
 
 
         // Find highest priority
-        // Smaller priority number = higher priority
+        // Smaller number = higher priority
 
         for (
             let i = 0;
@@ -616,25 +1035,85 @@ function priorityScheduling(processes) {
         }
 
 
-        // No process arrived
+        // ======================================
+        // CPU IDLE
+        // ======================================
 
-        if (workingProcess === -1) {
+        if (
+            workingProcess === -1
+        ) {
 
-            currentTime++;
+            let nextArrival =
+                Infinity;
 
-            idleTime++;
+
+            for (
+                let i = 0;
+                i < p.length;
+                i++
+            ) {
+
+                if (
+                    !p[i].completed &&
+                    p[i].AT > currentTime
+                ) {
+
+                    nextArrival =
+                        Math.min(
+                            nextArrival,
+                            p[i].AT
+                        );
+                }
+            }
+
+
+            if (
+                nextArrival !== Infinity
+            ) {
+
+                gantt.push({
+
+                    pid: "IDLE",
+
+                    start:
+                        currentTime,
+
+                    end:
+                        nextArrival
+                });
+
+
+                idleTime +=
+                    nextArrival -
+                    currentTime;
+
+
+                currentTime =
+                    nextArrival;
+
+            } else {
+
+                currentTime++;
+
+                idleTime++;
+            }
+
 
             continue;
         }
 
 
-        // Execute completely
+        // ======================================
+        // EXECUTE PROCESS
+        // ======================================
 
         const start =
             currentTime;
 
+
         currentTime +=
             p[workingProcess].BT;
+
 
         const end =
             currentTime;
@@ -645,26 +1124,28 @@ function priorityScheduling(processes) {
             pid:
                 p[workingProcess].pid,
 
-            start: start,
+            start:
+                start,
 
-            end: end
+            end:
+                end
         });
 
 
-        // CT
+        // Completion Time
 
         p[workingProcess].CT =
             currentTime;
 
 
-        // TAT
+        // Turnaround Time
 
         p[workingProcess].TAT =
             p[workingProcess].CT -
             p[workingProcess].AT;
 
 
-        // WT
+        // Waiting Time
 
         p[workingProcess].WT =
             p[workingProcess].TAT -
@@ -680,11 +1161,14 @@ function priorityScheduling(processes) {
 
     return {
 
-        processes: p,
+        processes:
+            p,
 
-        gantt: gantt,
+        gantt:
+            gantt,
 
-        idleTime: idleTime
+        idleTime:
+            idleTime
     };
 }
 
@@ -700,185 +1184,308 @@ function roundRobin(
 
     const p =
         processes.map(process => ({
-            ...process
+
+            ...process,
+
+            remainingTime:
+                process.BT,
+
+            completed: false
         }));
 
 
     const queue = [];
 
-    const queueInsert =
-        new Array(p.length).fill(false);
+    const inQueue =
+        new Array(p.length)
+            .fill(false);
 
 
     let currentTime = 0;
 
-    const gantt = [];
+    let completedCount = 0;
 
     let idleTime = 0;
 
+    const gantt = [];
+
 
     // ======================================
-    // Same logic as your C++ code
-    // Insert processes according to AT
+    // SORT BY ARRIVAL TIME
     // ======================================
 
-    for (let i = 0; i < p.length; i++) {
+    const sortedIndexes =
+        p.map(
+            (process, index) =>
+                index
+        ).sort(
+            (a, b) =>
+                p[a].AT -
+                p[b].AT ||
+                a - b
+        );
 
-        let minArrival =
-            Infinity;
 
-        let workingMinProcess =
-            -1;
+    let nextArrivalIndex = 0;
 
 
-        for (
-            let j = 0;
-            j < p.length;
-            j++
+    // ======================================
+    // MAIN LOOP
+    // ======================================
+
+    while (
+        completedCount < p.length
+    ) {
+
+
+        // ==================================
+        // ADD ARRIVED PROCESSES
+        // ==================================
+
+        while (
+            nextArrivalIndex <
+                sortedIndexes.length &&
+
+            p[
+                sortedIndexes[
+                    nextArrivalIndex
+                ]
+            ].AT <= currentTime
+        ) {
+
+            const index =
+                sortedIndexes[
+                    nextArrivalIndex
+                ];
+
+
+            if (
+                !inQueue[index] &&
+                !p[index].completed
+            ) {
+
+                queue.push(index);
+
+                inQueue[index] =
+                    true;
+            }
+
+
+            nextArrivalIndex++;
+        }
+
+
+        // ==================================
+        // CPU IDLE
+        // ==================================
+
+        if (
+            queue.length === 0
         ) {
 
             if (
-                p[j].AT < minArrival &&
-                queueInsert[j] === false
+                nextArrivalIndex <
+                sortedIndexes.length
             ) {
 
-                minArrival =
-                    p[j].AT;
+                const nextIndex =
+                    sortedIndexes[
+                        nextArrivalIndex
+                    ];
 
-                workingMinProcess =
-                    j;
+                const nextArrivalTime =
+                    p[nextIndex].AT;
+
+
+                if (
+                    currentTime <
+                    nextArrivalTime
+                ) {
+
+                    gantt.push({
+
+                        pid: "IDLE",
+
+                        start:
+                            currentTime,
+
+                        end:
+                            nextArrivalTime
+                    });
+
+
+                    idleTime +=
+                        nextArrivalTime -
+                        currentTime;
+
+
+                    currentTime =
+                        nextArrivalTime;
+                }
+
+
+                continue;
             }
         }
 
 
-        if (
-            workingMinProcess !== -1
-        ) {
-
-            queueInsert[
-                workingMinProcess
-            ] = true;
-
-            queue.push(
-                workingMinProcess
-            );
-        }
-    }
-
-
-    // ======================================
-    // Round Robin Execution
-    // ======================================
-
-    while (queue.length > 0) {
+        // ==================================
+        // TAKE PROCESS FROM QUEUE
+        // ==================================
 
         const workingProcess =
             queue.shift();
 
 
-        // Execute quantum
+        inQueue[workingProcess] =
+            false;
+
 
         if (
-            p[workingProcess].BT >=
-            timeQuantum
+            p[workingProcess].completed
         ) {
 
-            const start =
-                currentTime;
-
-            currentTime +=
-                timeQuantum;
-
-            const end =
-                currentTime;
+            continue;
+        }
 
 
-            gantt.push({
-
-                pid:
-                    p[workingProcess].pid,
-
-                start: start,
-
-                end: end
-            });
+        const start =
+            currentTime;
 
 
-            p[workingProcess].BT -=
-                timeQuantum;
+        // ==================================
+        // EXECUTE FOR TIME QUANTUM
+        // ==================================
+
+        const executionTime =
+            Math.min(
+                timeQuantum,
+                p[workingProcess]
+                    .remainingTime
+            );
+
+
+        currentTime +=
+            executionTime;
+
+
+        const end =
+            currentTime;
+
+
+        // Add process Gantt block
+
+        gantt.push({
+
+            pid:
+                p[workingProcess].pid,
+
+            start:
+                start,
+
+            end:
+                end
+        });
+
+
+        // Reduce remaining time
+
+        p[workingProcess]
+            .remainingTime -=
+            executionTime;
+
+
+        // ==================================
+        // ADD NEWLY ARRIVED PROCESSES
+        // ==================================
+
+        while (
+            nextArrivalIndex <
+                sortedIndexes.length &&
+
+            p[
+                sortedIndexes[
+                    nextArrivalIndex
+                ]
+            ].AT <= currentTime
+        ) {
+
+            const index =
+                sortedIndexes[
+                    nextArrivalIndex
+                ];
 
 
             if (
-                p[workingProcess].BT > 0
+                !inQueue[index] &&
+                !p[index].completed &&
+                index !== workingProcess
             ) {
 
-                queue.push(
-                    workingProcess
-                );
+                queue.push(index);
 
-            } else {
-
-                p[workingProcess].CT =
-                    currentTime;
-
-                p[workingProcess].TAT =
-                    p[workingProcess].CT -
-                    p[workingProcess].AT;
-
-                p[workingProcess].WT =
-                    p[workingProcess].TAT -
-                    p[workingProcess].BT1;
+                inQueue[index] =
+                    true;
             }
 
-        } else {
 
-            // Remaining burst time
-
-            const start =
-                currentTime;
-
-            currentTime +=
-                p[workingProcess].BT;
-
-            const end =
-                currentTime;
+            nextArrivalIndex++;
+        }
 
 
-            gantt.push({
+        // ==================================
+        // PROCESS COMPLETED
+        // ==================================
 
-                pid:
-                    p[workingProcess].pid,
+        if (
+            p[workingProcess]
+                .remainingTime === 0
+        ) {
 
-                start: start,
-
-                end: end
-            });
-
-
-            p[workingProcess].BT = 0;
+            p[workingProcess]
+                .completed = true;
 
 
             p[workingProcess].CT =
                 currentTime;
 
+
             p[workingProcess].TAT =
                 p[workingProcess].CT -
                 p[workingProcess].AT;
 
+
             p[workingProcess].WT =
                 p[workingProcess].TAT -
                 p[workingProcess].BT1;
+
+
+            completedCount++;
+
+        } else {
+
+            // Put process at end of queue
+
+            queue.push(
+                workingProcess
+            );
+
+            inQueue[workingProcess] =
+                true;
         }
     }
 
 
     return {
 
-        processes: p,
+        processes:
+            p,
 
-        gantt: gantt,
+        gantt:
+            gantt,
 
-        idleTime: idleTime
+        idleTime:
+            idleTime
     };
 }
 
@@ -899,22 +1506,50 @@ function displayResults(result) {
 
     ganttChart.innerHTML = "";
 
+
     result.gantt.forEach(
-        (block, index) => {
+        (block) => {
 
             const div =
                 document.createElement("div");
 
-            div.className =
-                "gantt-block";
+
+            // ==================================
+            // IDLE BLOCK
+            // ==================================
+
+            if (
+                block.pid === "IDLE"
+            ) {
+
+                div.className =
+                    "gantt-block idle-block";
+
+            } else {
+
+                div.className =
+                    "gantt-block";
+            }
+
+
+            // Width based on execution time
 
             div.style.flex =
                 `${block.end - block.start}`;
 
+
+            // ==================================
+            // GANTT CONTENT
+            // ==================================
+
             div.innerHTML = `
 
                 <strong>
-                    P${block.pid}
+                    ${
+                        block.pid === "IDLE"
+                            ? "IDLE"
+                            : `P${block.pid}`
+                    }
                 </strong>
 
                 <span>
@@ -922,6 +1557,7 @@ function displayResults(result) {
                 </span>
 
             `;
+
 
             ganttChart.appendChild(div);
         }
@@ -935,56 +1571,60 @@ function displayResults(result) {
     resultTableBody.innerHTML = "";
 
 
-    processes.forEach(process => {
+    processes.forEach(
+        process => {
 
-        const row =
-            document.createElement("tr");
-
-
-        const priorityCell =
-            algorithmSelect.value === "PRIORITY"
-
-                ? `<td>${process.Priority}</td>`
-
-                : `<td>-</td>`;
+            const row =
+                document.createElement("tr");
 
 
-        row.innerHTML = `
+            const priorityCell =
+                algorithmSelect.value ===
+                "PRIORITY"
 
-            <td class="process-name">
-                P${process.pid}
-            </td>
+                    ? `<td>${process.Priority}</td>`
 
-            <td>
-                ${process.AT}
-            </td>
-
-            <td>
-                ${process.BT1}
-            </td>
-
-            ${priorityCell}
-
-            <td>
-                ${process.CT}
-            </td>
-
-            <td>
-                ${process.TAT}
-            </td>
-
-            <td>
-                ${process.WT}
-            </td>
-        `;
+                    : `<td>-</td>`;
 
 
-        resultTableBody.appendChild(row);
-    });
+            row.innerHTML = `
+
+                <td class="process-name">
+                    P${process.pid}
+                </td>
+
+                <td>
+                    ${process.AT}
+                </td>
+
+                <td>
+                    ${process.BT1}
+                </td>
+
+                ${priorityCell}
+
+                <td>
+                    ${process.CT}
+                </td>
+
+                <td>
+                    ${process.TAT}
+                </td>
+
+                <td>
+                    ${process.WT}
+                </td>
+
+            `;
+
+
+            resultTableBody.appendChild(row);
+        }
+    );
 
 
     // ======================================
-    // AVERAGES
+    // AVERAGE WT & TAT
     // ======================================
 
     let totalWT = 0;
@@ -992,23 +1632,31 @@ function displayResults(result) {
     let totalTAT = 0;
 
 
-    processes.forEach(process => {
+    processes.forEach(
+        process => {
 
-        totalWT += process.WT;
+            totalWT +=
+                process.WT;
 
-        totalTAT += process.TAT;
-    });
+            totalTAT +=
+                process.TAT;
+        }
+    );
 
 
     const averageWT =
-        totalWT / processes.length;
+        totalWT /
+        processes.length;
+
 
     const averageTAT =
-        totalTAT / processes.length;
+        totalTAT /
+        processes.length;
 
 
     avgWT.textContent =
         averageWT.toFixed(2);
+
 
     avgTAT.textContent =
         averageTAT.toFixed(2);
@@ -1029,7 +1677,8 @@ function displayResults(result) {
     const lastCompletion =
         Math.max(
             ...processes.map(
-                process => process.CT
+                process =>
+                    process.CT
             )
         );
 
@@ -1064,10 +1713,34 @@ function displayResults(result) {
 }
 
 
-//mobile menu
-const mobileMenu = document.querySelector(".mobile-menu");
-const navLinks = document.querySelector(".nav-links");
+// ==========================================
+// MOBILE MENU
+// ==========================================
 
-mobileMenu.addEventListener("click", () => {
-    navLinks.classList.toggle("show");
-});
+const mobileMenu =
+    document.querySelector(
+        ".mobile-menu"
+    );
+
+
+const navLinks =
+    document.querySelector(
+        ".nav-links"
+    );
+
+
+if (
+    mobileMenu &&
+    navLinks
+) {
+
+    mobileMenu.addEventListener(
+        "click",
+        () => {
+
+            navLinks.classList.toggle(
+                "show"
+            );
+        }
+    );
+}

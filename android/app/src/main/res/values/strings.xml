@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">CPU Scheduler</string>
+    <string name="title_activity_main">CPU Scheduler</string>
+    <string name="package_name">com.nazmul.cpuscheduler</string>
+    <string name="custom_url_scheme">com.nazmul.cpuscheduler</string>
+</resources>

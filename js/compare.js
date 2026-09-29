@@ -3,7 +3,9 @@
 // ==========================================
 
 
-// Get elements
+// ==========================================
+// GET ELEMENTS
+// ==========================================
 
 const compareBtn =
     document.getElementById("compare-btn");
@@ -30,7 +32,9 @@ compareBtn.addEventListener(
 
 function compareAlgorithms() {
 
-    // Get selected algorithms
+    // ======================================
+    // GET SELECTED ALGORITHMS
+    // ======================================
 
     const selectedAlgorithms =
         Array.from(
@@ -42,9 +46,13 @@ function compareAlgorithms() {
         );
 
 
-    // At least two algorithms
+    // ======================================
+    // AT LEAST TWO ALGORITHMS
+    // ======================================
 
-    if (selectedAlgorithms.length < 2) {
+    if (
+        selectedAlgorithms.length < 2
+    ) {
 
         alert(
             "Please select at least two algorithms."
@@ -54,7 +62,9 @@ function compareAlgorithms() {
     }
 
 
-    // Get process input
+    // ======================================
+    // GET PROCESS INPUT
+    // ======================================
 
     const processes =
         getProcessesFromTable();
@@ -73,7 +83,9 @@ function compareAlgorithms() {
     }
 
 
-    // Time quantum
+    // ======================================
+    // GET TIME QUANTUM
+    // ======================================
 
     const quantum =
         parseInt(
@@ -81,7 +93,9 @@ function compareAlgorithms() {
         );
 
 
-    // RR validation
+    // ======================================
+    // ROUND ROBIN VALIDATION
+    // ======================================
 
     if (
         selectedAlgorithms.includes("RR") &&
@@ -96,6 +110,10 @@ function compareAlgorithms() {
     }
 
 
+    // ======================================
+    // STORE RESULTS
+    // ======================================
+
     const results = [];
 
 
@@ -106,10 +124,32 @@ function compareAlgorithms() {
     selectedAlgorithms.forEach(
         algorithm => {
 
-            let result;
+            let result = null;
 
 
-            if (algorithm === "SJF") {
+            // ==================================
+            // FCFS
+            // ==================================
+
+            if (
+                algorithm === "FCFS"
+            ) {
+
+                result =
+                    fcfs(
+                        cloneProcesses(processes)
+                    );
+
+            }
+
+
+            // ==================================
+            // SJF
+            // ==================================
+
+            else if (
+                algorithm === "SJF"
+            ) {
 
                 result =
                     sjf(
@@ -119,7 +159,13 @@ function compareAlgorithms() {
             }
 
 
-            else if (algorithm === "SRTF") {
+            // ==================================
+            // SRTF
+            // ==================================
+
+            else if (
+                algorithm === "SRTF"
+            ) {
 
                 result =
                     srtf(
@@ -129,7 +175,13 @@ function compareAlgorithms() {
             }
 
 
-            else if (algorithm === "PRIORITY") {
+            // ==================================
+            // PRIORITY
+            // ==================================
+
+            else if (
+                algorithm === "PRIORITY"
+            ) {
 
                 result =
                     priorityScheduling(
@@ -139,7 +191,13 @@ function compareAlgorithms() {
             }
 
 
-            else if (algorithm === "RR") {
+            // ==================================
+            // ROUND ROBIN
+            // ==================================
+
+            else if (
+                algorithm === "RR"
+            ) {
 
                 result =
                     roundRobin(
@@ -150,11 +208,20 @@ function compareAlgorithms() {
             }
 
 
+            // ==================================
+            // STORE RESULT
+            // ==================================
+
             if (result) {
 
                 results.push({
-                    algorithm: algorithm,
-                    result: result
+
+                    algorithm:
+                        algorithm,
+
+                    result:
+                        result
+
                 });
 
             }
@@ -163,14 +230,39 @@ function compareAlgorithms() {
     );
 
 
-    // Display comparison table
+    // ======================================
+    // CHECK RESULTS
+    // ======================================
 
-    displayComparisonTable(results);
+    if (
+        results.length < 2
+    ) {
+
+        alert(
+            "Unable to generate comparison results."
+        );
+
+        return;
+    }
 
 
-    // Display Gantt charts
+    // ======================================
+    // DISPLAY COMPARISON TABLE
+    // ======================================
 
-    displayComparisonGantt(results);
+    displayComparisonTable(
+        results
+    );
+
+
+    // ======================================
+    // DISPLAY GANTT CHARTS
+    // ======================================
+
+    displayComparisonGantt(
+        results
+    );
+
 }
 
 
@@ -178,7 +270,9 @@ function compareAlgorithms() {
 // CLONE PROCESS DATA
 // ==========================================
 
-function cloneProcesses(processes) {
+function cloneProcesses(
+    processes
+) {
 
     return processes.map(
         process => ({
@@ -199,20 +293,35 @@ function getComparisonName(
 
     switch (algorithm) {
 
+        case "FCFS":
+
+            return "FCFS";
+
+
         case "SJF":
+
             return "SJF";
 
+
         case "SRTF":
+
             return "SRTF";
 
+
         case "PRIORITY":
+
             return "Priority Scheduling";
 
+
         case "RR":
+
             return "Round Robin";
 
+
         default:
+
             return algorithm;
+
     }
 
 }
@@ -226,8 +335,15 @@ function displayComparisonTable(
     results
 ) {
 
-    comparisonTableBody.innerHTML = "";
+    // Clear old rows
 
+    comparisonTableBody.innerHTML =
+        "";
+
+
+    // ======================================
+    // CREATE ROW FOR EACH ALGORITHM
+    // ======================================
 
     results.forEach(
         item => {
@@ -236,27 +352,44 @@ function displayComparisonTable(
                 item.result.processes;
 
 
+            // ==================================
+            // TOTAL WAITING TIME
+            // ==================================
+
             let totalWT = 0;
+
+
+            // ==================================
+            // TOTAL TURNAROUND TIME
+            // ==================================
 
             let totalTAT = 0;
 
 
-            // Calculate totals
+            // ==================================
+            // CALCULATE TOTALS
+            // ==================================
 
             processes.forEach(
                 process => {
 
                     totalWT +=
-                        process.WT;
+                        Number(
+                            process.WT || 0
+                        );
 
                     totalTAT +=
-                        process.TAT;
+                        Number(
+                            process.TAT || 0
+                        );
 
                 }
             );
 
 
-            // Calculate averages
+            // ==================================
+            // CALCULATE AVERAGES
+            // ==================================
 
             const averageWT =
                 totalWT /
@@ -268,40 +401,61 @@ function displayComparisonTable(
                 processes.length;
 
 
-            // Idle time
+            // ==================================
+            // CPU IDLE TIME
+            // ==================================
 
             const idleTime =
-                item.result.idleTime;
+                Number(
+                    item.result.idleTime || 0
+                );
 
 
-            // Create row
+            // ==================================
+            // CREATE TABLE ROW
+            // ==================================
 
             const row =
-                document.createElement("tr");
+                document.createElement(
+                    "tr"
+                );
 
 
             row.innerHTML = `
 
                 <td class="algorithm-name">
+
                     ${getComparisonName(
                         item.algorithm
                     )}
+
                 </td>
 
+
                 <td>
+
                     ${averageWT.toFixed(2)}
+
                 </td>
 
+
                 <td>
+
                     ${averageTAT.toFixed(2)}
+
                 </td>
 
+
                 <td>
+
                     ${idleTime}
+
                 </td>
 
             `;
 
+
+            // Add row
 
             comparisonTableBody.appendChild(
                 row
@@ -321,7 +475,9 @@ function displayComparisonGantt(
     results
 ) {
 
-    // Remove previous comparison charts
+    // ======================================
+    // REMOVE OLD COMPARISON GANTT SECTION
+    // ======================================
 
     const oldSection =
         document.getElementById(
@@ -330,23 +486,33 @@ function displayComparisonGantt(
 
 
     if (oldSection) {
+
         oldSection.remove();
+
     }
 
 
-    // Main section
+    // ======================================
+    // CREATE MAIN SECTION
+    // ======================================
 
     const section =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
+
 
     section.id =
         "comparison-gantt-section";
+
 
     section.className =
         "comparison-gantt-section";
 
 
-    // Heading
+    // ======================================
+    // SECTION HEADING
+    // ======================================
 
     section.innerHTML = `
 
@@ -356,9 +522,11 @@ function displayComparisonGantt(
                 GANTT CHARTS
             </span>
 
+
             <h3>
                 Algorithm Execution Comparison
             </h3>
+
 
             <p>
                 Gantt charts generated using
@@ -371,23 +539,36 @@ function displayComparisonGantt(
 
 
     // ======================================
-    // CREATE CHART FOR EACH ALGORITHM
+    // CREATE GANTT FOR EACH ALGORITHM
     // ======================================
 
     results.forEach(
         item => {
 
+
+            // ==================================
+            // CREATE CARD
+            // ==================================
+
             const card =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
+
 
             card.className =
                 "card comparison-gantt-card";
 
 
-            // Header
+            // ==================================
+            // HEADER
+            // ==================================
 
             const header =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
+
 
             header.className =
                 "comparison-gantt-title";
@@ -398,10 +579,13 @@ function displayComparisonGantt(
                 <div>
 
                     <h3>
+
                         ${getComparisonName(
                             item.algorithm
                         )}
+
                     </h3>
+
 
                     <p>
                         CPU execution timeline
@@ -409,95 +593,201 @@ function displayComparisonGantt(
 
                 </div>
 
+
                 <span class="algorithm-tag">
+
                     ${item.algorithm}
+
                 </span>
 
             `;
 
 
-            // Wrapper
+            // ==================================
+            // GANTT WRAPPER
+            // ==================================
 
             const wrapper =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
+
 
             wrapper.className =
                 "gantt-wrapper";
 
 
-            // Chart
+            // ==================================
+            // GANTT CHART
+            // ==================================
 
             const chart =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
+
 
             chart.className =
                 "gantt-chart";
 
 
             // ==================================
-            // GANTT BLOCKS
+            // CHECK GANTT DATA
             // ==================================
 
-            item.result.gantt.forEach(
-                block => {
+            if (
+                item.result.gantt &&
+                item.result.gantt.length > 0
+            ) {
 
-                    const ganttBlock =
-                        document.createElement(
-                            "div"
+
+                // ==================================
+                // CREATE EACH GANTT BLOCK
+                // ==================================
+
+                item.result.gantt.forEach(
+                    block => {
+
+
+                        const ganttBlock =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        ganttBlock.className =
+                            "gantt-block";
+
+
+                        // ==================================
+                        // CALCULATE DURATION
+                        // ==================================
+
+                        const duration =
+                            Number(
+                                block.end
+                            ) -
+                            Number(
+                                block.start
+                            );
+
+
+                        // ==================================
+                        // WIDTH
+                        // ==================================
+
+                        ganttBlock.style.flex =
+                            `${Math.max(
+                                duration,
+                                0.1
+                            )}`;
+
+
+                        // ==================================
+                        // PROCESS NAME
+                        // ==================================
+
+                        const processName =
+                            block.pid === "IDLE"
+                                ? "IDLE"
+                                : `P${block.pid}`;
+
+
+                        // ==================================
+                        // GANTT BLOCK CONTENT
+                        // ==================================
+
+                        ganttBlock.innerHTML = `
+
+                            <strong>
+
+                                ${processName}
+
+                            </strong>
+
+
+                            <span>
+
+                                ${block.start}
+                                –
+                                ${block.end}
+
+                            </span>
+
+                        `;
+
+
+                        // ==================================
+                        // ADD BLOCK
+                        // ==================================
+
+                        chart.appendChild(
+                            ganttBlock
                         );
 
+                    }
+                );
 
-                    ganttBlock.className =
-                        "gantt-block";
-
-
-                    const duration =
-                        block.end -
-                        block.start;
+            }
 
 
-                    // Width based on duration
+            // ==================================
+            // NO GANTT DATA
+            // ==================================
 
-                    ganttBlock.style.flex =
-                        `${duration}`;
+            else {
 
-
-                    ganttBlock.innerHTML = `
-
-                        <strong>
-                            P${block.pid}
-                        </strong>
-
-                        <span>
-                            ${block.start}
-                            –
-                            ${block.end}
-                        </span>
-
-                    `;
-
-
-                    chart.appendChild(
-                        ganttBlock
+                const emptyMessage =
+                    document.createElement(
+                        "div"
                     );
 
-                }
-            );
 
+                emptyMessage.className =
+                    "comparison-no-gantt";
+
+
+                emptyMessage.textContent =
+                    "No Gantt chart data available.";
+
+
+                chart.appendChild(
+                    emptyMessage
+                );
+
+            }
+
+
+            // ==================================
+            // ADD CHART TO WRAPPER
+            // ==================================
 
             wrapper.appendChild(
                 chart
             );
 
 
+            // ==================================
+            // ADD HEADER TO CARD
+            // ==================================
+
             card.appendChild(
                 header
             );
+
+
+            // ==================================
+            // ADD WRAPPER TO CARD
+            // ==================================
 
             card.appendChild(
                 wrapper
             );
 
+
+            // ==================================
+            // ADD CARD TO SECTION
+            // ==================================
 
             section.appendChild(
                 card
@@ -508,7 +798,7 @@ function displayComparisonGantt(
 
 
     // ======================================
-    // INSERT AFTER COMPARISON TABLE
+    // INSERT AFTER COMPARISON RESULT CARD
     // ======================================
 
     const comparisonResultCard =
@@ -517,7 +807,9 @@ function displayComparisonGantt(
         );
 
 
-    if (comparisonResultCard) {
+    if (
+        comparisonResultCard
+    ) {
 
         comparisonResultCard.after(
             section

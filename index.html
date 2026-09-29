@@ -12,7 +12,10 @@
 
 <body>
 
-    
+
+    <!-- =========================
+         HEADER
+    ========================== -->
 
     <header class="header">
 
@@ -20,7 +23,7 @@
 
             <a href="#" class="logo">
                 <span class="logo-icon">⚙</span>
-                CPU<span>Viz</span>
+                CPU<span>Simulator</span>
             </a>
 
             <nav class="nav-links">
@@ -172,6 +175,12 @@
 
                             <select id="algorithm">
 
+                                <!-- FCFS ADDED -->
+
+                                <option value="FCFS">
+                                    First Come First Serve (FCFS)
+                                </option>
+
                                 <option value="SJF">
                                     Shortest Job First (SJF)
                                 </option>
@@ -202,10 +211,12 @@
                                 Number of Processes
                             </label>
 
+                            <!-- DEFAULT CHANGED 5 -> 3 -->
+
                             <input
                                 type="number"
                                 id="process-count"
-                                value="5"
+                                value="3"
                                 min="1"
                                 max="10">
 
@@ -357,7 +368,7 @@
                             class="algorithm-tag"
                             id="algorithm-tag">
 
-                            SJF
+                            FCFS
 
                         </span>
 
@@ -587,6 +598,23 @@
                         <div class="checkbox-grid">
 
 
+                            <!-- FCFS ADDED -->
+
+                            <label class="checkbox">
+
+                                <input
+                                    type="checkbox"
+                                    value="FCFS"
+                                    checked>
+
+                                <span>
+                                    FCFS
+                                </span>
+
+                            </label>
+
+
+
                             <label class="checkbox">
 
                                 <input
@@ -793,7 +821,7 @@
             <div>
 
                 <strong>
-                    CPU<span>Viz</span>
+                    CPU<span> Simulator</span>
                 </strong>
 
                 <p>
